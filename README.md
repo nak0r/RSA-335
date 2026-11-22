@@ -4,9 +4,9 @@ Changes made on top of version 2.21 (the version numbers in RSA.toc and
 RSA_Options.toc have NOT been changed).
 
 Files modified:
- RSA/Core.lua
- RSA/Locale-enUS.lua
- RSA_Options/Options.lua
+ - RSA/Core.lua
+ - RSA/Locale-enUS.lua
+ - RSA_Options/Options.lua
 
 Install: copy Core.lua and Locale-enUS.lua into the RSA folder, and
 Options.lua into the RSA_Options folder, replacing the existing files.
