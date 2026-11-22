@@ -8,11 +8,6 @@ Files modified:
  - RSA/Locale-enUS.lua
  - RSA_Options/Options.lua
 
-Install: copy Core.lua and Locale-enUS.lua into the RSA folder, and
-Options.lua into the RSA_Options folder, replacing the existing files.
-Existing users do not need to reset their profile; new settings pick up
-their defaults automatically.
-
 
 ========== Added ==========
 
