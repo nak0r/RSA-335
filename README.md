@@ -43,14 +43,14 @@ Files modified:
    These spells previously announced Start and End only. They now also
    announce when they are resisted/missed and when the target is immune.
 
-   Druid:    Cyclone, Hibernate
-   Mage:     Polymorph
-   Priest:   Shackle Undead
-   Rogue:    Sap, Blind, Dismantle
-   Shaman:   Hex, Bind Elemental
-   Warlock:  Banish, Fear, Seduce
-   Paladin:  Repentance
-   Warrior:  Disarm
+	Druid:    Cyclone, Hibernate
+	Mage:     Polymorph
+	Priest:   Shackle Undead
+	Rogue:    Sap, Blind, Dismantle
+	Shaman:   Hex, Bind Elemental
+	Warlock:  Banish, Fear, Seduce
+	Paladin:  Repentance
+	Warrior:  Disarm
 
    - New message boxes "Resisted" and "Immune" on each spell's page, using
      the [MISSTYPE] token (Missed / Resisted / Immune). The page's help text
