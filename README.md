@@ -138,10 +138,6 @@ update the matching "spellID ==" line in Core.lua.
    not work in game. It needs to be redone from scratch; the combat log
    behaviour of resurrection casts should be checked first.)
 ** Add the ability to play sounds on local warnings
-** Add the ability to send messages through other addon's frames, such as
-   Parrot SCT, Bigwigs etc.
-(Hammer of Justice interrupt is already in the code, so that item can be
-removed from To_Do.txt.)
 
 
 ========== Known issues / notes for WotLK ==========
@@ -152,6 +148,8 @@ removed from To_Do.txt.)
    verified against a database): Hand of Protection, Hand of Sacrifice,
    Lay on Hands, Dispel Magic, Banish, Fear, Hibernate, Shackle Undead,
    Sap, Pummel, Shield Bash, Kick, Purge, Spell Lock, Devour Magic.
+   
 ** The Mage Teleport list appears to be missing Teleport: Darnassus (3565).
+
 ** Polymorph: Turkey (61780) exists as a spell ID but players cannot learn
    it; it is harmless.
