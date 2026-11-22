@@ -1,0 +1,9 @@
+## Interface: 40000
+## Title: RSA - |cFFFF75B3Options|r
+## Notes: |cff00FF00Version: 2.21|r. Configuration options for Raeli's Spell Announcer.
+## Author: Raeli
+## Version: 2.21
+## Dependencies: RSA
+## LoadOnDemand: 1
+
+Options.lua

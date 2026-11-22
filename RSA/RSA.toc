@@ -1,0 +1,11 @@
+## Interface: 40000
+## Title: RSA - |cFFFF75B3Raeli's Spell Announcer|r
+## Notes: |cff00FF00Version: 2.21|r. Easy Spell Announcements! Amongst other things.
+## Author: Raeli
+## Version: 2.21
+## SavedVariables: RSADB
+## OptionalDeps: Ace3
+
+embeds.xml
+Locale-enUS.lua
+Core.lua

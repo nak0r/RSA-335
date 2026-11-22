@@ -1,0 +1,76 @@
+local L = LibStub("AceLocale-3.0"):NewLocale("RSA", "enUS", true)
+
+-- Option Header Descriptions
+L.Version = "|cff00FF00Version: ".. GetAddOnMetadata("RSA", "Version") .. "|r"
+L.Spell_Options = "Settings for individual spells. Select the spell you want to configure from the drop down list on the left."
+L.Reminder_Options = "Options for reminding you when certain buffs are missing."
+L.AboutTitle = "\n\n|cff00CCFFAbout|r"
+L.About = "Welcome to RSA! If you're stuck, go to the help tab or type |cff33ff99/rsa help|r. If you still aren't sure, leave me a comment on Curse at: |cff33ff99http://wow.curse.com/downloads/wow-addons/details/rsa.aspx|r. If you find a bug, or have a feature request, make a ticket on Curse at: |cff33ff99http://wow.curseforge.com/addons/rsa/tickets/|r.\n\n"
+
+-- Load on Demand Descriptions
+L.OptionsDisabled = "Options module disabled, please enable it."
+L.OptionsMissing = "Options module not found, please delete your RSA folder, download, and install it again."
+
+-- Option Titles
+L["Announce In"] = true
+L["Local"] = true
+L["Spell Options"] = true
+L["|cFFFF75B3Reminder Options|r"] = true
+L["Custom Channel"] = true
+L["Channel Name"] = true
+L["Raid"] = true
+L["Party"] = true
+L["Say"] = true
+L["Whisper"] = true
+L["Raid / Party"] = true
+L["Message"] = true
+L["Start"] = true
+L["End"] = true
+L["Successful"] = true
+L["Resisted"] = true
+L["Immune"] = true
+L["Chat Window"] = true
+L["Reminder Spell"] = true
+L["Spell to check:"] = true
+L["Enabling Options"] = true
+L["Enable in Primary Specialisation"] = true
+L["Enable in Secondary Specialisation"] = true
+L["Disable in PvP"] = true
+L["Warning Intervals"] = true
+L["Check Interval"] = true
+L["Remind Interval"] = true
+L["Reminder Locations"] = true
+L["Raid Warning Frame"] = true
+
+
+-- Option Descriptions
+L["Sends to Raid if you're in a raid, or party if you're in a party."] = true
+L["Sends to say if you are ungrouped."] = true
+L.SpellDescNoTarget = "Here you can set a custom message to announce upon using this spell. You may use:\n|cFFFF75B3[SPELL]|r for the spell.\n|cFFFF75B3[LINK]|r for a clickable spell link."
+L.SpellDescTarget = "Here you can set a custom message to announce upon using this spell. You may use:\n|cFFFF75B3[SPELL]|r for the spell.\n|cFFFF75B3[LINK]|r for a clickable spell link.\n|cFFFF75B3[TARGET]|r for the target."
+L.SpellDescHeal = "Here you can set a custom message to announce upon using this spell. You may use:\n|cFFFF75B3[SPELL]|r for the spell.\n|cFFFF75B3[LINK]|r for a clickable spell link.\n|cFFFF75B3[TARGET]|r for the target.\n|cFFFF75B3[AMOUNT]|r for the amount healed."
+L.SpellDescMissable = "Here you can set a custom message to announce upon using this spell. You may use:\n|cFFFF75B3[SPELL]|r for the spell.\n|cFFFF75B3[LINK]|r for a clickable spell link.\n|cFFFF75B3[TARGET]|r for the target.\n|cFFFF75B3[MISSTYPE]|r for the type of resist."
+L.SpellDescInterrupt = "Here you can set a custom message to announce upon using this spell. You may use:\n|cFFFF75B3[SPELL]|r for the spell.\n|cFFFF75B3[LINK]|r for a clickable spell link.\n|cFFFF75B3[TARGET]|r for the target.\n|cFFFF75B3[TARCAST]|r for the spell you interrupt.\n|cFFFF75B3[TARLINK]|r for a clickable spell link for the spell you interrupt.\n|cFFFF75B3[MISSTYPE]|r for the type of resist."
+L.SpellDescDispel = "Here you can set a custom message to announce upon using this spell. You may use:\n|cFFFF75B3[SPELL]|r for the spell.\n|cFFFF75B3[LINK]|r for a clickable spell link.\n|cFFFF75B3[TARGET]|r for the target.\n|cFFFF75B3[AURA]|r for the (de)buff removed.\n|cFFFF75B3[AURALINK]|r for a clickable spell link for the (de)buff removed."
+L.DescSpellStartSuccess = "The message played when the spell lands successfully."
+L.DescSpellStartCastingMessage = "The message played upon casting the spell."
+L.DescSpellEndCastingMessage = "The message played upon the spell ending."
+L.DescSpellEndResist = "The message played on resists."
+L.DescSpellEndImmune = "The message played when the target is immune."
+L.DescSpellRemindName = "Enter the name of the spell you wish to be reminded of.\n|cffFF0000WARNING:|r If you do not enter the name of the spell accurately, it will not work."
+L["Turns off the spell reminders while you have PvP active."] = true
+L["Enables reminding of missing buffs while in your Primary Talent Specialisation"] = true
+L["Enables reminding of missing buffs while in your Secondary Talent Specialisation"] = true
+L["How often you want to check for missing buffs."] = true
+L["How often you want to be reminded about missing buffs."] = true
+L["Sends reminders to your Raid Warning frame at the center of the screen."] = true
+L["Sends reminders to your default chat window."] = true
+
+
+-- FAQ
+L["|cFFFF75B3Help!|r"] = true
+L.FAQ_Channels = "|cff00CCFFLocal|r: Enabling this option will cause the spell you set it on to send a message to either your chat window or to the Raid Warning area in the middle of your screen. You can change where it sends messages in the |cff33ff99Global Options|r under |cff33ff99Local Message Settings|r.\n\n|cff00CCFFWhisper|r: Enabling this option will cause the spell you set it on to whisper the target that the spell is cast on. It will not try to whisper yourself, NPCs, or hostile players.\n\n|cff00CCFFCustom Channel|r: Upon enabling this, a text box will appear, allowing you to enter a channel to send messages to. |cffFF0000You must enter a custom channel, not an already existing Blizzard channel.|r\n\n|cff00CCFFRaid / Party|r: Enabling this option will cause the spell you set it on to send a message to Party chat, or to Raid chat depending on if you are in a raid group or in a party. If you are in a Raid, it will only announce to Raid, not both Raid and Party. If you aren't in a group, it won't do anything. It also doesn't announce in Battleground chat. This option will only be shown if you have |cff33ff99Smart Raid & Party|r checked in the |cff33ff99Global Options|r.\n\n|cff00CCFFRaid|r: Enabling this option will cause the spell to announce to Raid chat, obviously only if you are in a raid. If you aren't in a Raid group, it will do nothing. This option is hidden if you enable Smart Raid/Party in the |cff33ff99Global Options|r.\n\n|cff00CCFFParty|r: Enabling this option will cause the spell to announce the Party chat, this will still announce to your Party even if you are in a Raid group, obviously if you are ungrouped, it will do nothing. This option is hidden if you enable Smart Raid/Party in the |cff33ff99Global Options|r.\n\n|cff00CCFFSay|r: Enabling this option will cause the spell you set it on to Say a message to the say channel. If you enable |cff33ff99Smart Say|r in the |cff33ff99Global Options|r it will only announce to Say while you are in a party or raid.\n\n"
+L.FAQ_Global = "|cff00CCFFDisable in PvP|r: If checked this option will cause RSA not to announce any messages, other than those that are set to Whisper or Local.\n\n|cff00CCFFEnable only in Instances|r: If checked this option will cause RSA not to announce any mesages, unless you are in an instance.\n\n|cff00CCFFSmart Custom Channel|r: If checked this option will cause RSA not to send messages to Custom Channels unless you are grouped. Useful so that you don't spam channels when playing alone.\n\n|cff00CCFFSmart Raid & Party|r: If checked, this option will merge the Raid and the Party options in Spell Options into one Raid / Party option. This new Raid / Party option will cause spells you set it on to announce to Party chat, or Raid chat, depending on if you are in a party or raid group.\n\n|cff00CCFFSmart Say|r: If checked, this option will cause options that are set to announce in Say to only do so while you are in a group.\n\n"
+L.FAQ_Channel = "|cff00CCFFSet to all spells|r: This button will set the custom channel of all spells to whatever you have set in the text box to the left of it. You will need to accept the confirmation window that pops up. |cffFF0000This will overwrite any custom channels you have already set for your spells|r, so if you wish to set a different custom channel to a specific spell, you will need to do it after doing this. |cffFF0000You must enter a custom channel, not an already existing Blizzard channel.|r"
+L.FAQ_Local = "|cff00CCFFChat Window|r: If this option is checked, any spells you set to announce in Local will send a message to your primary chat window. This message is visible only to yourself.\n\n|cff00CCFFRaid Warning Frame|r: If this option is checked, any spells you set to announce in Local will send a message to the Raid Warning Frame, where Raid Warning messages are sent, in the middle of your screen. This message will only be visible to yourself."
+L.FAQ_Spell_Help = "If you want help about all of the channels go to the |cffFFCC00Channels|r section.\n\n\n\n|cff00CCFFMessage Options|r: These are the text boxes you will see below the channel selections of spells. You can enter different text into these boxes to change what message is announced. Certain spells allow you to enter certain text which will be transformed depending on the spell:\n\nIf you put |cff00CCFF[SPELL]|r in the for instance, it will replace the word |cff00CCFF[SPELL]|r in your message with the actual spell. So if you put |cFFFF75B3[SPELL] activated!|r in Ardent Defender's message, it will say |cFFFF75B3Ardent Defender activated!|r in the final message.\n\nEach spell has a list of what text you can use that will be replaced. They all have descriptions of how they work."

@@ -1,0 +1,12412 @@
+-----------------------------------------
+---- Raeli's Spell Announcer Options ----
+-----------------------------------------
+local RSA = RSA
+RSA_O = RSA:NewModule("RSA_Options", "AceConsole-3.0") -- , "LibSink-2.0"
+local L = LibStub("AceLocale-3.0"):GetLocale("RSA")
+
+
+------------------------
+---- Global Options ----
+------------------------
+local Options = {
+	type = "group",
+	name = "|cFFFF75B3Raeli's Spell Announcer|r",
+	order = 0,
+	childGroups = "tab",
+	args = {
+	--[[output = {
+	type = "group",
+	name = "This is for LibSink",
+	},]]--
+		Version = {
+			type = "description",
+			name = L.Version,
+			fontSize = "medium",
+			order = 0,
+		},
+		Description_Header = {
+			type = "description",
+			name = L.AboutTitle,
+			fontSize = "medium",
+			order = 1,
+		},
+		Description = {
+			type = "description",
+			name = L.About,
+			order = 2,		
+		},	
+		Smart_Head = {
+			type = "header",
+			name = "Global Announcement Options",
+			order = 10,
+		},
+		Smart_Head_Desc = {
+			type = "description",
+			name = "These options affect all spells, hover over each to see a full description of what it does.",
+			order = 11,
+		},
+		Smart_RaidParty = {
+			type = "toggle",
+			name = "Smart Raid & Party",
+			order = 12,
+			desc = "When enabled, merges options to announce seperately to Raid and Party channels. It will automatically announce in a Raid if you're in a raid, Party if you're in a party, or not at all if you are ungrouped.",
+			get = function(info)
+					return RSA.db.profile.General.Smart.RaidParty
+				end,
+			set = function (info, value)
+					RSA.db.profile.General.Smart.RaidParty = value
+				end,
+		},
+		Smart_Say = {
+			type = "toggle",
+			name = "Smart Say",
+			order = 12,
+			desc = "Enabling this will only cause you to announce selected spells in say |cffFF0000only|r while you are grouped.",
+			get = function(info)
+					return RSA.db.profile.General.Smart.Say
+				end,
+			set = function (info, value)
+					RSA.db.profile.General.Smart.Say = value
+				end,
+		},
+		Smart_CustomChannel = {
+			type = "toggle",
+			name = "Smart Custom Channel",
+			order = 12,
+			desc = "Enabling this will only cause you to announce selected spells in your custom channel |cffFF0000only|r while you are grouped.",
+			get = function(info)
+					return RSA.db.profile.General.Smart.CustomChannel
+				end,
+			set = function(info, value)
+					RSA.db.profile.General.Smart.CustomChannel = value
+				end,
+		},
+		Smart_Instance = {
+			type = "toggle",
+			name = "Enable only in Instances",
+			order = 12,
+			desc = "Enabling this will only cause you to announce selected spells |cffFF0000only|r while you are in an instance.",
+			get = function(info)
+					return RSA.db.profile.General.Smart.InInstance
+				end,
+			set = function(info, value)
+					RSA.db.profile.General.Smart.InInstance = value
+				end,
+		},
+		Smart_PvP = {
+			type = "toggle",
+			name = "Disable in PvP",
+			order = 12,
+			desc = "Enabling this will cause you to stop announcing spells while you are have PvP on.",
+			get = function(info)
+					return RSA.db.profile.General.Smart.PvP
+				end,
+			set = function(info, value)
+					RSA.db.profile.General.Smart.PvP = value
+				end,		
+		},
+		---- End of Section ----
+		Custom_Channel_Head = {
+			type = "header",
+			name = "Custom Channel Settings",
+			order = 20,
+		},
+		Custom_Channel_Desc = {
+			type = "description",
+			name = "You can choose to set channels for individual spells in their own options, though for convenience, you can set the custom channel for all spells here, by clicking on the \"Set to All Spells\" Button.",
+			order = 21,
+		},
+		Custom_Channel_Text = {
+			type = "input",
+			name = "Name:",
+			desc = "Enter the name of the Custom Channel you wish to use.",
+			order = 22,
+			get = function(info)
+					return RSA.db.profile.General.GlobalCustomChannel
+				end,
+			set = function(info, value)
+					RSA.db.profile.General.GlobalCustomChannel = value
+				end,
+		},
+		Custom_Channel_Set_Global = {
+			type = "execute",
+			name = "Set to all spells",
+			desc = "|cffFF0000WARNING:|r Doing this will override any custom channels you have set on spells!",
+			confirm = true,
+			func = function()
+						-- DEATH KNIGHT
+						if RSA.db.profile.General.Class == "DEATHKNIGHT" then
+							RSA.db.profile.DeathKnight.Spells.Army.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.DeathKnight.Spells.AMS.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.DeathKnight.Spells.IceboundFortitude.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.DeathKnight.Spells.Strangulate.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.DeathKnight.Spells.VampiricBlood.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.DeathKnight.Spells.BoneShield.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						
+						-- DRUID
+						elseif RSA.db.profile.General.Class == "DRUID" then
+							RSA.db.profile.Druid.Spells.Barkskin.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Druid.Spells.SurvivalInstincts.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Druid.Spells.Cyclone.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Druid.Spells.FrenziedRegeneration.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Druid.Spells.Hibernate.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Druid.Spells.Innervate.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Druid.Spells.Growl.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						
+						-- MAGE
+						elseif RSA.db.profile.General.Class == "MAGE" then
+							RSA.db.profile.Mage.Spells.Spellsteal.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Mage.Spells.Polymorph.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Mage.Spells.Counterspell.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Mage.Spells.Portals.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Mage.Spells.RefreshmentTable.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						
+						-- PALADIN
+						elseif RSA.db.profile.General.Class == "PALADIN" then
+							RSA.db.profile.Paladin.Spells.ArdentDefender.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.AuraMastery.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.DivineProtection.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.DivineGuardian.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.HandOfFreedom.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.HandOfProtection.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.HandOfSacrifice.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.HandOfSalvation.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.LayOnHands.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.Repentance.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.RighteousDefense.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.Beacon.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Paladin.Spells.HammerOfJustice.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						
+						-- PRIEST
+						elseif RSA.db.profile.General.Class == "PRIEST" then
+							RSA.db.profile.Priest.Spells.DivineHymn.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.HymnOfHope.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.FearWard.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.Levitate.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.ShackleUndead.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.DispelMagic.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.GuardianSpirit.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.PainSuppression.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.Lightwell.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.PowerInfusion.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.LightwellRenew.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Priest.Spells.CureDisease.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						
+						-- SHAMAN
+						elseif RSA.db.profile.General.Class == "SHAMAN" then
+							RSA.db.profile.Shaman.Spells.Hex.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Shaman.Spells.Heroism.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Shaman.Spells.WindShear.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Shaman.Spells.Purge.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Shaman.Spells.CleanseSpirit.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+							RSA.db.profile.Shaman.Spells.ManaTide.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						
+						-- WARLOCK
+						elseif RSA.db.profile.General.Class == "WARLOCK" then
+						RSA.db.profile.Warlock.Spells.Soulwell.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warlock.Spells.SummonStone.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warlock.Spells.Suffering.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warlock.Spells.Banish.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warlock.Spells.Fear.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warlock.Spells.Seduce.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warlock.Spells.SpellLock.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warlock.Spells.Devour.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						
+						-- WARRIOR
+						elseif RSA.db.profile.General.Class == "WARRIOR" then
+						RSA.db.profile.Warrior.Spells.ShatteringThrow.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warrior.Spells.ShieldWall.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warrior.Spells.ChallengingShout.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warrior.Spells.Pummel.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warrior.Spells.Disarm.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warrior.Spells.ShieldBash.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warrior.Spells.Taunt.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warrior.Spells.Vigilance.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						RSA.db.profile.Warrior.Spells.LastStand.CustomChannel.Channel = RSA.db.profile.General.GlobalCustomChannel
+						
+						end
+					end,
+			order = 23,
+		},
+		---- End of Section ----
+		Local_Head = {
+			type = "header",
+			name = "Local Message Settings",
+			order = 50,
+		},
+		Local_Desc = {
+			type = "description",
+			name = "Spells that are set \"local\" in their settings will be sent to one or more of the following places, here you can select which.",
+			order = 51,
+		},
+		Local_Chat = {
+			type = "toggle",
+			name = "Chat Window",
+			desc = "Sends spell messages set to local to your default Chat Window.",
+			order = 52,
+			get = function(info)
+					return RSA.db.profile.General.Local.Chat
+				end,
+			set = function(info, value)
+					RSA.db.profile.General.Local.Chat =  value
+				end,
+		},
+		Local_RaidWarn = {
+			type = "toggle",
+			name = L["Raid Warning Frame"],
+			desc = "Sends spell messages set to local to the Raid Warning Frame in the center of your screen.",
+			order = 53,
+			get = function(info)
+					return RSA.db.profile.General.Local.RaidWarn
+				end,
+			set = function(info, value)
+					RSA.db.profile.General.Local.RaidWarn =  value
+				end,
+		},
+	},
+}
+
+
+
+-------------------------
+---- Profile Options ----
+-------------------------
+local Profile = {
+	type = "group",
+	name = "|cFFFF75B3Profiles|r",
+	order = 99,
+	childGroups = "tab",
+	args = {
+		Profile = {
+			type = "group",
+			name = "Profile",
+			order = 99,
+			childGroups = "tab",
+		},
+	},
+}
+
+
+
+--------------------------
+---- Reminder Options ----
+--------------------------
+local Reminders = {
+	type = "group",
+	name = L["|cFFFF75B3Reminder Options|r"],
+	order = 1,
+	childGroups = "tab",
+	args = {
+	
+		Description = {
+			type = "description",
+			name = L.Reminder_Options,
+			order = 0,
+		},	
+		Title = {
+			type = "header",
+			name = L["Reminder Spell"],
+			order = 1,
+		},
+
+		DeathKnight = {
+			type = "input",
+			width = "full",
+			name = L["Spell to check:"],
+			desc = L.DescSpellRemindName,
+			order = 9,
+			hidden = function()
+				return RSA.db.profile.General.Class ~= "DEATHKNIGHT"
+			end,
+			get = function(info)
+					return RSA.db.profile.DeathKnight.Reminders.SpellName
+				end,
+			set = function(info, value)
+					RSA.db.profile.DeathKnight.Reminders.SpellName = value
+				end,
+		},
+		Druid = {
+			type = "input",
+			width = "full",
+			name = L["Spell to check:"],
+			desc = L.DescSpellRemindName,
+			order = 9,
+			hidden = function()
+				return RSA.db.profile.General.Class ~= "DRUID"
+			end,
+			get = function(info)
+					return RSA.db.profile.Druid.Reminders.SpellName
+				end,
+			set = function(info, value)
+					RSA.db.profile.Druid.Reminders.SpellName = value
+				end,
+		},
+		Hunter = {
+			type = "input",
+			width = "full",
+			name = L["Spell to check:"],
+			desc = L.DescSpellRemindName,
+			order = 9,
+			hidden = function()
+				return RSA.db.profile.General.Class ~= "HUNTER"
+			end,
+			get = function(info)
+					return RSA.db.profile.Hunter.Reminders.SpellName
+				end,
+			set = function(info, value)
+					RSA.db.profile.Hunter.Reminders.SpellName = value
+				end,
+		},		
+		Mage = {
+			type = "input",
+			width = "full",
+			name = L["Spell to check:"],
+			desc = L.DescSpellRemindName,
+			order = 9,
+			hidden = function()
+				return RSA.db.profile.General.Class ~= "MAGE"
+			end,
+			get = function(info)
+					return RSA.db.profile.Mage.Reminders.SpellName
+				end,
+			set = function(info, value)
+					RSA.db.profile.Mage.Reminders.SpellName = value
+				end,
+		},		
+		Paladin = {
+			type = "input",
+			width = "full",
+			name = L["Spell to check:"],
+			desc = L.DescSpellRemindName,
+			order = 9,
+			hidden = function()
+				return RSA.db.profile.General.Class ~= "PALADIN"
+			end,
+			get = function(info)
+					return RSA.db.profile.Paladin.Reminders.SpellName
+				end,
+			set = function(info, value)
+					RSA.db.profile.Paladin.Reminders.SpellName = value
+				end,
+		},
+		Priest = {
+			type = "input",
+			width = "full",
+			name = L["Spell to check:"],
+			desc = L.DescSpellRemindName,
+			order = 9,
+			hidden = function()
+				return RSA.db.profile.General.Class ~= "PRIEST"
+			end,
+			get = function(info)
+					return RSA.db.profile.Priest.Reminders.SpellName
+				end,
+			set = function(info, value)
+					RSA.db.profile.Priest.Reminders.SpellName = value
+				end,
+		},
+		Rogue = {
+			type = "input",
+			width = "full",
+			name = L["Spell to check:"],
+			desc = L.DescSpellRemindName,
+			order = 9,
+			hidden = function()
+				return RSA.db.profile.General.Class ~= "ROGUE"
+			end,
+			get = function(info)
+					return RSA.db.profile.Rogue.Reminders.SpellName
+				end,
+			set = function(info, value)
+					RSA.db.profile.Rogue.Reminders.SpellName = value
+				end,
+		},		
+		Shaman = {
+			type = "input",
+			width = "full",
+			name = L["Spell to check:"],
+			desc = L.DescSpellRemindName,
+			order = 9,
+			hidden = function()
+				return RSA.db.profile.General.Class ~= "SHAMAN"
+			end,
+			get = function(info)
+					return RSA.db.profile.Shaman.Reminders.SpellName
+				end,
+			set = function(info, value)
+					RSA.db.profile.Shaman.Reminders.SpellName = value
+				end,
+		},
+		Warlock = {
+			type = "input",
+			width = "full",
+			name = L["Spell to check:"],
+			desc = L.DescSpellRemindName,
+			order = 9,
+			hidden = function()
+				return RSA.db.profile.General.Class ~= "WARLOCK"
+			end,
+			get = function(info)
+					return RSA.db.profile.Warlock.Reminders.SpellName
+				end,
+			set = function(info, value)
+					RSA.db.profile.Warlock.Reminders.SpellName = value
+				end,
+		},
+		Warrior = {
+			type = "input",
+			width = "full",
+			name = L["Spell to check:"],
+			desc = L.DescSpellRemindName,
+			order = 9,
+			hidden = function()
+				return RSA.db.profile.General.Class ~= "WARRIOR"
+			end,
+			get = function(info)
+					return RSA.db.profile.Warrior.Reminders.SpellName
+				end,
+			set = function(info, value)
+					RSA.db.profile.Warrior.Reminders.SpellName = value
+				end,
+		},
+		
+		Title2 = {
+			type = "header",
+			name = L["Enabling Options"],
+			order = 11,
+		},
+		DisableInPvP = {
+			type = "toggle",
+			name = L["Disable in PvP"],
+			desc = L["Turns off the spell reminders while you have PvP active."],
+			order = 12,
+			get = function(info)
+					return RSA.db.profile.Reminders.DisableInPvP
+				end,
+			set = function(info, value)
+					RSA.db.profile.Reminders.DisableInPvP = value
+				end,
+		},
+		EnableInSpec1 = {
+			type = "toggle",
+			name = L["Enable in Primary Specialisation"],
+			desc = L["Enables reminding of missing buffs while in your Primary Talent Specialisation"],
+			width = "full",
+			order = 13,
+			get = function(info)
+					return RSA.db.profile.Reminders.EnableInSpec1
+				end,
+			set = function(info, value)
+					RSA.db.profile.Reminders.EnableInSpec1 = value
+				end,
+		},
+		EnableInSpec2 = {
+			type = "toggle",
+			name = L["Enable in Secondary Specialisation"],
+			desc = L["Enables reminding of missing buffs while in your Secondary Talent Specialisation"],
+			width = "full",
+			order = 14,
+			get = function(info)
+					return RSA.db.profile.Reminders.EnableInSpec2
+				end,
+			set = function(info, value)
+					RSA.db.profile.Reminders.EnableInSpec2 = value
+				end,
+		},
+		Title3 = {
+			type = "header",
+			name = L["Warning Intervals"],
+			order = 15,
+		},
+		CheckInterval = {
+			type = "range",
+			name = L["Check Interval"],
+			desc = L["How often you want to check for missing buffs."],
+			order = 16,
+			width = "full",
+			min = 1,
+			max = 60,
+			step = 0.5,
+			get = function(info)
+					return RSA.db.profile.Reminders.CheckInterval
+				end,
+			set = function(info, value)
+					RSA.db.profile.Reminders.CheckInterval = value
+				end,
+		},
+		RemindInterval = {
+			type = "range",
+			name = L["Remind Interval"],
+			desc = L["How often you want to be reminded about missing buffs."],
+			order = 17,
+			width = "full",
+			min = 1,
+			max = 60,
+			step = 0.5,
+			get = function(info)
+					return RSA.db.profile.Reminders.RemindInterval
+				end,
+			set = function(info, value)
+					RSA.db.profile.Reminders.RemindInterval = value
+				end,
+		},
+		Title4 = {
+			type = "header",
+			name = L["Reminder Locations"],
+			order = 18,
+		},
+		Chat = {
+			type = "toggle",
+			name = L["Chat Window"],
+			desc = L["Sends reminders to your default chat window."],
+			order = 19,
+			get = function(info)
+					return RSA.db.profile.Reminders.RemindChannels.Chat
+				end,
+			set = function(info, value)
+					RSA.db.profile.Reminders.RemindChannels.Chat = value
+				end,
+		},
+		RaidWarn = {
+			type = "toggle",
+			name = L["Raid Warning Frame"],
+			desc = L["Sends reminders to your Raid Warning frame at the center of the screen."],
+			order = 20,
+			get = function(info)
+					return RSA.db.profile.Reminders.RemindChannels.RaidWarn
+				end,
+			set = function(info, value)
+					RSA.db.profile.Reminders.RemindChannels.RaidWarn = value
+				end,
+		},
+	},
+}
+
+
+
+-------------
+---- FAQ ----
+-------------
+local FAQ = {
+	type = "group",
+	name = L["|cFFFF75B3Help!|r"],
+	order = 50,
+	childGroups = "tree",
+	args = {
+		Description = {
+			type = "description",
+			name = "Not sure about something? Hopefully this will help!",
+			order = 10,
+		},
+		Channels = {
+			type = "group",
+			name = "Channels",
+			order = 20,
+			args = {
+				Channels_Help = {
+					type = "description",
+					name = L.FAQ_Channels,
+					order = 21,
+				},
+			},
+		},
+		Global_Options = {
+			type = "group",
+			name = "Global Options",
+			order = 30,
+			args = {
+				Global_Help = {
+					type = "description",
+					name = L.FAQ_Global,
+					order = 31,
+				},			
+			},
+		},
+		Custom_Channel = {
+			type = "group",
+			name = "Custom Channel Settings",
+			order = 40,	
+			args = {
+				Custom_Channel_Help = {
+					type = "description",
+					name = L.FAQ_Channel,
+					order = 41,		
+				},			
+			},
+		},
+		Local = {
+			type = "group",
+			name = "Local Message Settings",
+			order = 50,	
+			args = {
+				Local_Help = {
+					type = "description",
+					name = L.FAQ_Local,
+					order = 51,		
+				},			
+			},
+		},
+		Spell_Options = {
+			type = "group",
+			name = "Spell Options",
+			order = 60,	
+			args = {
+				Spell_Options_Help = {
+					type = "description",
+					name = L.FAQ_Spell_Help,
+					order = 61,
+				},
+			},
+		},		
+		
+
+		
+	},
+}
+
+
+
+------------------------------
+---- Death Knight Options ----
+------------------------------
+local DeathKnight = {
+	type = "group",
+	name = "|cFFC41F3B" .. L["Spell Options"] .."|r",
+	order = 2,
+	childGroups = "tree",
+	hidden = function()
+				return RSA.db.profile.General.Class ~= "DEATHKNIGHT"
+			end,
+	args = {
+		Description = {
+			type = "description",
+			name = L.Spell_Options,
+			order = 0,
+		},	
+		IceboundFortitude = {
+			type = "group",
+			name = "Icebound Fortitude",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.IceboundFortitude.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.IceboundFortitude.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.DeathKnight.Spells.IceboundFortitude.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.IceboundFortitude.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.IceboundFortitude.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.IceboundFortitude.Messages.End = value
+						end,
+				},
+			},
+		},
+		VampiricBlood = {
+			type = "group",
+			name = "Vampiric Blood",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.VampiricBlood.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.VampiricBlood.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.VampiricBlood.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.VampiricBlood.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.DeathKnight.Spells.VampiricBlood.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.VampiricBlood.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.VampiricBlood.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.VampiricBlood.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.VampiricBlood.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.DeathKnight.Spells.VampiricBlood.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.DeathKnight.Spells.VampiricBlood.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.VampiricBlood.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.VampiricBlood.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.VampiricBlood.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.VampiricBlood.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.VampiricBlood.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.VampiricBlood.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.VampiricBlood.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.VampiricBlood.Messages.End = value
+						end,
+				},
+			},
+		},		
+		BoneShield = {
+			type = "group",
+			name = "Bone Shield",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.BoneShield.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.BoneShield.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.BoneShield.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.BoneShield.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.DeathKnight.Spells.BoneShield.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.BoneShield.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.BoneShield.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.BoneShield.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.BoneShield.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.DeathKnight.Spells.BoneShield.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.DeathKnight.Spells.BoneShield.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.BoneShield.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.BoneShield.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.BoneShield.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.BoneShield.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.BoneShield.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.BoneShield.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.BoneShield.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.BoneShield.Messages.End = value
+						end,
+				},
+			},
+		},		
+		AMS = {
+			type = "group",
+			name = "Anti-Magic Shell",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.AMS.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.AMS.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.AMS.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.AMS.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.DeathKnight.Spells.AMS.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.AMS.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.AMS.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.AMS.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.AMS.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.DeathKnight.Spells.AMS.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.DeathKnight.Spells.AMS.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.AMS.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.AMS.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.AMS.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.AMS.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.AMS.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.AMS.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.AMS.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.AMS.Messages.End = value
+						end,
+				},
+			},
+		},		
+		Army = {
+			type = "group",
+			name = "Army of the Dead",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Army.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Army.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Army.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Army.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.DeathKnight.Spells.Army.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Army.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Army.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Army.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Army.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.DeathKnight.Spells.Army.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.DeathKnight.Spells.Army.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Army.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Army.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Army.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Army.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Army.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.Army.Messages.Start = value
+						end,
+				},
+			},
+		},
+		DarkCommand = {
+			type = "group",
+			name = "Dark Command",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.DeathKnight.Spells.DarkCommand.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.DeathKnight.Spells.DarkCommand.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DarkCommand.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.DarkCommand.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		DeathGrip = {
+			type = "group",
+			name = "Death Grip",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.DeathKnight.Spells.DeathGrip.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.DeathKnight.Spells.DeathGrip.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.DeathGrip.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.DeathGrip.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Strangulate = {
+			type = "group",
+			name = "Strangulate",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Strangulate.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Strangulate.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Strangulate.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Strangulate.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Strangulate.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.DeathKnight.Spells.Strangulate.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.DeathKnight.Spells.Strangulate.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Strangulate.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.Strangulate.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescInterrupt,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.Strangulate.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.Strangulate.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.Strangulate.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.Strangulate.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		MindFreeze = {
+			type = "group",
+			name = "Mind Freeze",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.DeathKnight.Spells.MindFreeze.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.DeathKnight.Spells.MindFreeze.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescInterrupt,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.DeathKnight.Spells.MindFreeze.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.DeathKnight.Spells.MindFreeze.Messages.Immune = value
+						end,
+				},
+			},
+		},		
+
+
+
+
+	},
+}
+
+
+
+-----------------------
+---- Druid Options ----
+-----------------------
+local Druid = {
+	type = "group",
+	name = "|cFFFF7D0A" .. L["Spell Options"] .."|r",
+	order = 2,
+	childGroups = "tree",
+	hidden = function()
+				return RSA.db.profile.General.Class ~= "DRUID"
+			end,
+	args = {
+		Description = {
+			type = "description",
+			name = L.Spell_Options,
+			order = 0,
+		},		
+		Barkskin = {
+			type = "group",
+			name = "Barkskin",
+			order = 0,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Barkskin.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Barkskin.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Barkskin.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Barkskin.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Druid.Spells.Barkskin.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Barkskin.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Barkskin.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Barkskin.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Barkskin.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Druid.Spells.Barkskin.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Druid.Spells.Barkskin.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Barkskin.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Barkskin.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Barkskin.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Barkskin.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Barkskin.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Barkskin.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Barkskin.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Barkskin.Messages.End = value
+						end,
+				},
+			},
+		},
+		SurvivalInstincts = {
+			type = "group",
+			name = "Survival Instincts",
+			order = 0,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.SurvivalInstincts.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.SurvivalInstincts.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.SurvivalInstincts.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.SurvivalInstincts.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Druid.Spells.SurvivalInstincts.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.SurvivalInstincts.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.SurvivalInstincts.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.SurvivalInstincts.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.SurvivalInstincts.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Druid.Spells.SurvivalInstincts.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Druid.Spells.SurvivalInstincts.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.SurvivalInstincts.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.SurvivalInstincts.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.SurvivalInstincts.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.SurvivalInstincts.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.SurvivalInstincts.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.SurvivalInstincts.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.SurvivalInstincts.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.SurvivalInstincts.Messages.End = value
+						end,
+				},
+			},
+		},
+		FrenziedRegeneration = {
+			type = "group",
+			name = "Frenzied Regeneration",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.FrenziedRegeneration.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.FrenziedRegeneration.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.FrenziedRegeneration.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.FrenziedRegeneration.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Druid.Spells.FrenziedRegeneration.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.FrenziedRegeneration.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.FrenziedRegeneration.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.FrenziedRegeneration.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.FrenziedRegeneration.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Druid.Spells.FrenziedRegeneration.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Druid.Spells.FrenziedRegeneration.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.FrenziedRegeneration.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.FrenziedRegeneration.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.FrenziedRegeneration.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.FrenziedRegeneration.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.FrenziedRegeneration.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.FrenziedRegeneration.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.FrenziedRegeneration.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.FrenziedRegeneration.Messages.End = value
+						end,
+				},
+			},
+		},		
+		Cyclone = {
+			type = "group",
+			name = "Cyclone",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Druid.Spells.Cyclone.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Druid.Spells.Cyclone.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Druid.Spells.Cyclone.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.Messages.End = value
+						end,
+				},
+				Resisted = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.Messages.Resisted = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Cyclone.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Cyclone.Messages.Immune = value
+						end,
+				},
+			},
+		},		
+		Hibernate = {
+			type = "group",
+			name = "Hibernate",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Druid.Spells.Hibernate.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Druid.Spells.Hibernate.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Druid.Spells.Hibernate.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.Messages.End = value
+						end,
+				},
+				Resisted = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.Messages.Resisted = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Hibernate.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Hibernate.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Innervate = {
+			type = "group",
+			name = "Innervate",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Innervate.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Innervate.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Innervate.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Innervate.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Innervate.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Innervate.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Druid.Spells.Innervate.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Innervate.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Innervate.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Innervate.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Innervate.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Druid.Spells.Innervate.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Druid.Spells.Innervate.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Innervate.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Innervate.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Innervate.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Innervate.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Innervate.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Innervate.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Innervate.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Innervate.Messages.End = value
+						end,
+				},
+			},
+		},
+		Growl = {
+			type = "group",
+			name = "Growl",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Growl.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Growl.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Growl.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Growl.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Growl.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Growl.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Druid.Spells.Growl.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Growl.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Growl.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Growl.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Growl.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Druid.Spells.Growl.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Druid.Spells.Growl.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Growl.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Growl.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Growl.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Druid.Spells.Growl.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Growl.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Growl.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Growl.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Growl.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Druid.Spells.Growl.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Druid.Spells.Growl.Messages.Immune = value
+						end,
+				},
+			},
+		},
+
+	},
+}
+
+
+------------------------
+---- Hunter Options ----
+------------------------
+
+
+
+----------------------
+---- Mage Options ---- 
+----------------------
+local Mage = {
+	type = "group",
+	name = "|cFF4AAAFF" .. L["Spell Options"] .."|r",
+	order = 2,
+	childGroups = "tree",
+	hidden = function()
+			return RSA.db.profile.General.Class ~= "MAGE"
+		end,
+	args = {
+		Description = {
+			type = "description",
+			name = L.Spell_Options,
+			order = 0,
+		},		
+		RefreshmentTable = {
+			type = "group",
+			name = "Refreshment Table",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.RefreshmentTable.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.RefreshmentTable.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.RefreshmentTable.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.RefreshmentTable.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Mage.Spells.RefreshmentTable.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.RefreshmentTable.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.RefreshmentTable.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.RefreshmentTable.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.RefreshmentTable.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Mage.Spells.RefreshmentTable.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Mage.Spells.RefreshmentTable.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.RefreshmentTable.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.RefreshmentTable.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.RefreshmentTable.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.RefreshmentTable.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.RefreshmentTable.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.RefreshmentTable.Messages.Start = value
+						end,
+				},
+			},
+		},
+		Portals = {
+			type = "group",
+			name = "Portals",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Portals.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Portals.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Portals.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Portals.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Mage.Spells.Portals.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Portals.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Portals.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Portals.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Portals.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Mage.Spells.Portals.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Mage.Spells.Portals.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Portals.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Portals.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Portals.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Portals.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Portals.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Portals.Messages.Start = value
+						end,
+				},
+			},
+		},
+		Teleport = {
+			type = "group",
+			name = "Teleport",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				TeleportDescription = {
+					type = "description",
+					name = "This will always only announce if you are in a group. The idea is to warn if you may be accidentally casting a Teleport instead of a Portal.",
+					order = 1,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Teleport.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Teleport.Local = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Teleport.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Teleport.Messages.Start = value
+						end,
+				},
+			},
+		},		
+		Polymorph = {
+			type = "group",
+			name = "Polymorph",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Polymorph.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Polymorph.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Polymorph.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Polymorph.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Mage.Spells.Polymorph.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Polymorph.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Polymorph.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Polymorph.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Polymorph.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Mage.Spells.Polymorph.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Mage.Spells.Polymorph.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Polymorph.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Polymorph.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Polymorph.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Polymorph.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Polymorph.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Polymorph.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Polymorph.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Polymorph.Messages.End = value
+						end,
+				},
+				Resisted = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Polymorph.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Polymorph.Messages.Resisted = value
+						end,
+				},
+				Immune = {
+					type = "input", 
+					width = "full",  
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Polymorph.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Polymorph.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Counterspell = {
+			type = "group",
+			name = "Counterspell",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Counterspell.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Counterspell.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Counterspell.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Counterspell.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Mage.Spells.Counterspell.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Counterspell.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Counterspell.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Counterspell.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Counterspell.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Mage.Spells.Counterspell.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Mage.Spells.Counterspell.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Counterspell.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Counterspell.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Counterspell.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Counterspell.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescInterrupt,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Counterspell.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Counterspell.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Counterspell.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Counterspell.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input", 
+					width = "full",  
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Counterspell.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Counterspell.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Spellsteal = {
+			type = "group",
+			name = "Spellsteal",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Spellsteal.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Spellsteal.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Spellsteal.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Spellsteal.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Mage.Spells.Spellsteal.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Spellsteal.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Spellsteal.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Spellsteal.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Spellsteal.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Mage.Spells.Spellsteal.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Mage.Spells.Spellsteal.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Spellsteal.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Spellsteal.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Spellsteal.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Mage.Spells.Spellsteal.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescDispel,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Spellsteal.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Spellsteal.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Mage.Spells.Spellsteal.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Mage.Spells.Spellsteal.Messages.End = value
+						end,
+				},
+			},
+		},
+	},
+}
+
+
+-------------------------
+---- Paladin Options ----
+-------------------------
+local Paladin = {
+	type = "group",
+	name = "|cFFFF75B3" .. L["Spell Options"] .."|r",
+	order = 2,
+	childGroups = "tree",
+	hidden = function()
+				return RSA.db.profile.General.Class ~= "PALADIN"
+			end,
+	args = {
+		Description = {
+			type = "description",
+			name = L.Spell_Options,
+			order = 0,
+		},		
+		ArdentDefender = {
+			type = "group",
+			name = "Ardent Defender",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.ArdentDefender.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.ArdentDefender.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.ArdentDefender.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.ArdentDefender.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.ArdentDefender.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.ArdentDefender.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.ArdentDefender.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.ArdentDefender.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.ArdentDefender.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.ArdentDefender.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.ArdentDefender.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.ArdentDefender.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.ArdentDefender.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.ArdentDefender.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.ArdentDefender.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescHeal,
+					order = 10,
+				},
+				Heal = {
+					type = "input",
+					width = "full",
+					name = L["Heal"],
+					desc = L.DescSpellHealMessage,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.ArdentDefender.Messages.Heal
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.ArdentDefender.Messages.Heal = value
+						end,
+				},
+			},
+		},
+		AuraMastery = {
+			type = "group",
+			name = "Aura Mastery",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.AuraMastery.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.AuraMastery.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.AuraMastery.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.AuraMastery.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.AuraMastery.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.AuraMastery.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.AuraMastery.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.AuraMastery.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.AuraMastery.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.AuraMastery.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.AuraMastery.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.AuraMastery.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.AuraMastery.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.AuraMastery.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.AuraMastery.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.AuraMastery.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.AuraMastery.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.AuraMastery.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.AuraMastery.Messages.End = value
+						end,
+				},
+			},
+		},
+		DivineProtection = {
+			type = "group",
+			name = "Divine Protection",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineProtection.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineProtection.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineProtection.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineProtection.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.DivineProtection.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineProtection.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineProtection.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineProtection.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineProtection.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.DivineProtection.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.DivineProtection.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineProtection.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineProtection.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineProtection.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineProtection.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineProtection.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.DivineProtection.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineProtection.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.DivineProtection.Messages.End = value
+						end,
+				},
+			},
+		},
+		Forbearance = {
+			type = "group",
+			name = "Forbearance",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Forbearance.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Forbearance.Local = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Forbearance.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.Forbearance.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Forbearance.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.Forbearance.Messages.End = value
+						end,
+				},
+			},
+		},
+		DivineGuardian = {
+			type = "group",
+			name = "Divine Guardian",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineGuardian.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineGuardian.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineGuardian.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineGuardian.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.DivineGuardian.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineGuardian.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineGuardian.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineGuardian.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineGuardian.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.DivineGuardian.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.DivineGuardian.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineGuardian.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineGuardian.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineGuardian.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.DivineGuardian.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineGuardian.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.DivineGuardian.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.DivineGuardian.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.DivineGuardian.Messages.End = value
+						end,
+				},
+			},
+		},
+		HandOfFreedom = {
+			type = "group",
+			name = "Hand Of Freedom",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfFreedom.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfFreedom.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfFreedom.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfFreedom.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfFreedom.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfFreedom.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.HandOfFreedom.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfFreedom.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfFreedom.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfFreedom.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfFreedom.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.HandOfFreedom.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.HandOfFreedom.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfFreedom.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfFreedom.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfFreedom.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfFreedom.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfFreedom.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfFreedom.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfFreedom.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfFreedom.Messages.End = value
+						end,
+				},
+			},
+		},
+		HandOfProtection = {
+			type = "group",
+			name = "Hand Of Protection",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfProtection.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfProtection.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfProtection.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfProtection.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfProtection.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfProtection.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.HandOfProtection.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfProtection.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfProtection.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfProtection.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfProtection.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.HandOfProtection.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.HandOfProtection.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfProtection.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfProtection.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfProtection.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfProtection.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfProtection.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfProtection.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfProtection.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfProtection.Messages.End = value
+						end,
+				},
+			},
+		},
+		HandOfSacrifice = {
+			type = "group",
+			name = "Hand Of Sacrifice",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSacrifice.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSacrifice.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSacrifice.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSacrifice.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSacrifice.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSacrifice.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.HandOfSacrifice.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSacrifice.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSacrifice.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSacrifice.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSacrifice.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.HandOfSacrifice.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.HandOfSacrifice.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSacrifice.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSacrifice.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSacrifice.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSacrifice.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSacrifice.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSacrifice.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSacrifice.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSacrifice.Messages.End = value
+						end,
+				},
+			},
+		},
+		HandOfSalvation = {
+			type = "group",
+			name = "Hand Of Salvation",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSalvation.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSalvation.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSalvation.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSalvation.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSalvation.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSalvation.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.HandOfSalvation.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSalvation.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSalvation.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSalvation.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSalvation.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.HandOfSalvation.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.HandOfSalvation.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSalvation.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSalvation.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSalvation.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSalvation.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSalvation.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSalvation.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfSalvation.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfSalvation.Messages.End = value
+						end,
+				},
+			},
+		},
+		LayOnHands = {
+			type = "group",
+			name = "Lay On Hands",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.LayOnHands.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.LayOnHands.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.LayOnHands.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.LayOnHands.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.LayOnHands.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.LayOnHands.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.LayOnHands.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.LayOnHands.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.LayOnHands.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.LayOnHands.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.LayOnHands.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.LayOnHands.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.LayOnHands.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.LayOnHands.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.LayOnHands.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.LayOnHands.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.LayOnHands.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescHeal,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.LayOnHands.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.LayOnHands.Messages.Start = value
+						end,
+				},
+				--[[End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.LayOnHands.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.LayOnHands.Messages.End = value
+						end,
+				},]]--
+			},
+		},
+		Repentance = {
+			type = "group",
+			name = "Repentance",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.Repentance.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.Repentance.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.Repentance.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.Messages.End = value
+						end,
+				},
+				Resisted = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.Messages.Resisted = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Repentance.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.Repentance.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		HandOfReckoning = {
+			type = "group",
+			name = "Hand Of Reckoning",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.HandOfReckoning.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.HandOfReckoning.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HandOfReckoning.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HandOfReckoning.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		RighteousDefense = {
+			type = "group",
+			name = "Righteous Defense",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.RighteousDefense.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.RighteousDefense.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.RighteousDefense.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.RighteousDefense.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.RighteousDefense.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.RighteousDefense.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.RighteousDefense.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.RighteousDefense.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.RighteousDefense.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.RighteousDefense.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.RighteousDefense.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.RighteousDefense.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.RighteousDefense.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Beacon = {
+			type = "group",
+			name = "Beacon Of Light",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Beacon.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Beacon.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Beacon.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Beacon.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Beacon.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Beacon.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.Beacon.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Beacon.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Beacon.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Beacon.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Beacon.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.Beacon.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.Beacon.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Beacon.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Beacon.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Beacon.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.Beacon.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Beacon.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.Beacon.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.Beacon.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.Beacon.Messages.End = value
+						end,
+				},
+
+			},
+		},
+		HammerOfJustice = {
+			type = "group",
+			name = "Hammer Of Justice",
+			desc = "Hammer of Justice Interrupt effect only!",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HammerOfJustice.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HammerOfJustice.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HammerOfJustice.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HammerOfJustice.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HammerOfJustice.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HammerOfJustice.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Paladin.Spells.HammerOfJustice.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HammerOfJustice.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HammerOfJustice.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HammerOfJustice.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HammerOfJustice.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Paladin.Spells.HammerOfJustice.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Paladin.Spells.HammerOfJustice.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HammerOfJustice.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HammerOfJustice.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HammerOfJustice.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Paladin.Spells.HammerOfJustice.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescInterrupt,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HammerOfJustice.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HammerOfJustice.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Paladin.Spells.HammerOfJustice.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Paladin.Spells.HammerOfJustice.Messages.End = value
+						end,
+				},
+			},
+		},
+
+
+
+	},
+}
+
+
+
+------------------------
+---- Priest Options ----
+------------------------
+local Priest = {
+	type = "group",
+	name = "|cFFFFFFFF" .. L["Spell Options"] .."|r",
+	order = 2,
+	childGroups = "tree",
+	hidden = function()
+				return RSA.db.profile.General.Class ~= "PRIEST"
+			end,
+	args = {
+		Description = {
+			type = "description",
+			name = L.Spell_Options,
+			order = 0,
+		},		
+		DivineHymn = {
+			type = "group",
+			name = "Divine Hymn",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DivineHymn.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DivineHymn.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DivineHymn.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DivineHymn.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.DivineHymn.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DivineHymn.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DivineHymn.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DivineHymn.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DivineHymn.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.DivineHymn.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.DivineHymn.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DivineHymn.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DivineHymn.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DivineHymn.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DivineHymn.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DivineHymn.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.DivineHymn.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DivineHymn.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.DivineHymn.Messages.End = value
+						end,
+				},
+			},
+		},
+		HymnOfHope = {
+			type = "group",
+			name = "Hymn Of Hope",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.HymnOfHope.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.HymnOfHope.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.HymnOfHope.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.HymnOfHope.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.HymnOfHope.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.HymnOfHope.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.HymnOfHope.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.HymnOfHope.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.HymnOfHope.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.HymnOfHope.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.HymnOfHope.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.HymnOfHope.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.HymnOfHope.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.HymnOfHope.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.HymnOfHope.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.HymnOfHope.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.HymnOfHope.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.HymnOfHope.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.HymnOfHope.Messages.End = value
+						end,
+				},
+			},
+		},
+		FearWard = {
+			type = "group",
+			name = "Fear Ward",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.FearWard.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.FearWard.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.FearWard.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.FearWard.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.FearWard.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.FearWard.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.FearWard.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.FearWard.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.FearWard.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.FearWard.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.FearWard.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.FearWard.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.FearWard.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.FearWard.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.FearWard.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.FearWard.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.FearWard.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.FearWard.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.FearWard.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.FearWard.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.FearWard.Messages.End = value
+						end,
+				},
+			},
+		},
+		Levitate = {
+			type = "group",
+			name = "Levitate",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Levitate.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Levitate.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Levitate.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Levitate.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Levitate.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Levitate.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.Levitate.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Levitate.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Levitate.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Levitate.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Levitate.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.Levitate.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.Levitate.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Levitate.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Levitate.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Levitate.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Levitate.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Levitate.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.Levitate.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Levitate.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.Levitate.Messages.End = value
+						end,
+				},
+			},
+		},
+		ShackleUndead = {
+			type = "group",
+			name = "Shackle Undead",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.ShackleUndead.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.ShackleUndead.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.ShackleUndead.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.Messages.End = value
+						end,
+				},
+				Resisted = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.Messages.Resisted = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.ShackleUndead.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.ShackleUndead.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		DispelMagic = {
+			type = "group",
+			name = "Dispel Magic",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DispelMagic.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DispelMagic.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DispelMagic.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DispelMagic.Whisper = value
+						end,
+				},				
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DispelMagic.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DispelMagic.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.DispelMagic.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DispelMagic.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DispelMagic.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DispelMagic.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DispelMagic.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.DispelMagic.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.DispelMagic.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DispelMagic.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DispelMagic.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DispelMagic.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.DispelMagic.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescDispel,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DispelMagic.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.DispelMagic.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.DispelMagic.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.DispelMagic.Messages.End = value
+						end,
+				},
+			},
+		},
+		GuardianSpirit = {
+			type = "group",
+			name = "Guardian Spirit",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.GuardianSpirit.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.GuardianSpirit.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.GuardianSpirit.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.GuardianSpirit.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.GuardianSpirit.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.GuardianSpirit.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.GuardianSpirit.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.GuardianSpirit.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.GuardianSpirit.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.GuardianSpirit.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.GuardianSpirit.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.GuardianSpirit.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.GuardianSpirit.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.GuardianSpirit.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.GuardianSpirit.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.GuardianSpirit.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.GuardianSpirit.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.GuardianSpirit.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.GuardianSpirit.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.GuardianSpirit.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.GuardianSpirit.Messages.End = value
+						end,
+				},
+			},
+		},
+		PainSuppression = {
+			type = "group",
+			name = "Pain Suppression",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PainSuppression.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PainSuppression.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PainSuppression.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PainSuppression.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PainSuppression.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PainSuppression.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.PainSuppression.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PainSuppression.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PainSuppression.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PainSuppression.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PainSuppression.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.PainSuppression.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.PainSuppression.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PainSuppression.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PainSuppression.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PainSuppression.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PainSuppression.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PainSuppression.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.PainSuppression.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PainSuppression.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.PainSuppression.Messages.End = value
+						end,
+				},
+			},
+		},
+		Lightwell = {
+			type = "group",
+			name = "Lightwell",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Lightwell.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Lightwell.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Lightwell.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Lightwell.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.Lightwell.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Lightwell.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Lightwell.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Lightwell.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Lightwell.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.Lightwell.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.Lightwell.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Lightwell.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Lightwell.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Lightwell.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.Lightwell.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.Lightwell.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.Lightwell.Messages.Start = value
+						end,
+				},
+			},
+		},
+		PowerInfusion = {
+			type = "group",
+			name = "Power Infusion",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PowerInfusion.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PowerInfusion.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PowerInfusion.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PowerInfusion.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PowerInfusion.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PowerInfusion.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.PowerInfusion.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PowerInfusion.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PowerInfusion.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PowerInfusion.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PowerInfusion.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.PowerInfusion.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.PowerInfusion.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PowerInfusion.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PowerInfusion.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PowerInfusion.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.PowerInfusion.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PowerInfusion.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.PowerInfusion.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.PowerInfusion.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.PowerInfusion.Messages.End = value
+						end,
+				},
+			},
+		},
+		LightwellRenew = {
+			type = "group",
+			name = "Lightwell Renew",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.LightwellRenew.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.LightwellRenew.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.LightwellRenew.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.LightwellRenew.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.LightwellRenew.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.LightwellRenew.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.LightwellRenew.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.LightwellRenew.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.LightwellRenew.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.LightwellRenew.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.LightwellRenew.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.LightwellRenew.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.LightwellRenew.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.LightwellRenew.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.LightwellRenew.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.LightwellRenew.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.LightwellRenew.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.LightwellRenew.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.LightwellRenew.Messages.Start = value
+						end,
+				},
+			},
+		},
+		CureDisease = {
+			type = "group",
+			name = "Cure Disease",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.CureDisease.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.CureDisease.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.CureDisease.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.CureDisease.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Priest.Spells.CureDisease.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.CureDisease.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.CureDisease.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.CureDisease.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.CureDisease.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Priest.Spells.CureDisease.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Priest.Spells.CureDisease.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.CureDisease.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.CureDisease.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.CureDisease.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Priest.Spells.CureDisease.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescDispel,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Priest.Spells.CureDisease.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Priest.Spells.CureDisease.Messages.Start = value
+						end,
+				},
+			},
+		},	
+		
+	},
+}
+
+
+
+-----------------------
+---- Rogue Options ----
+-----------------------
+local Rogue = {
+	type = "group",
+	name = "|cFFFFDD00" .. L["Spell Options"] .. "|r",
+	order = 2,
+	childGroups = "tree",
+	hidden = function()
+				return RSA.db.profile.General.Class ~= "ROGUE"
+			end,
+	args = {
+		Sap = {
+			type = "group",
+			name = "Sap",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Sap.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Sap.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Sap.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Rogue.Spells.Sap.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Sap.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Sap.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Rogue.Spells.Sap.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Rogue.Spells.Sap.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Sap.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Sap.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Sap.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Sap.Messages.End = value
+						end,
+				},			
+				Resisted = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Sap.Messages.Resisted = value
+						end,
+				},			
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Sap.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Sap.Messages.Immune = value
+						end,
+				},			
+			},
+		},
+		Kick = {
+			type = "group",
+			name = "Kick",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Kick.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Kick.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Kick.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Kick.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Kick.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Kick.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Rogue.Spells.Kick.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Kick.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Kick.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Kick.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Kick.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Rogue.Spells.Kick.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Rogue.Spells.Kick.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Kick.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Kick.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Kick.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Kick.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescInterrupt,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Kick.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Kick.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Kick.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Kick.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Kick.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Kick.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Dismantle = {
+			type = "group",
+			name = "Dismantle",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Dismantle.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Dismantle.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Dismantle.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Dismantle.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Rogue.Spells.Dismantle.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Dismantle.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Dismantle.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Dismantle.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Dismantle.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Rogue.Spells.Dismantle.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Rogue.Spells.Dismantle.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Dismantle.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Dismantle.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Dismantle.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Dismantle.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Dismantle.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Dismantle.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Dismantle.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Dismantle.Messages.End = value
+						end,
+				},				
+				Resisted = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Dismantle.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Dismantle.Messages.Resisted = value
+						end,
+				},				
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Dismantle.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Dismantle.Messages.Immune = value
+						end,
+				},				
+			},
+		},
+		Blind = {
+			type = "group",
+			name = "Blind",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Blind.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Blind.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Blind.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Blind.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Rogue.Spells.Blind.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Blind.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Blind.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Blind.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Blind.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Rogue.Spells.Blind.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Rogue.Spells.Blind.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Blind.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Blind.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Blind.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Rogue.Spells.Blind.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Blind.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Blind.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Blind.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Blind.Messages.End = value
+						end,
+				},
+				Resisted = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Blind.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Blind.Messages.Resisted = value
+						end,
+				},
+				Immune = {
+					type = "input", 
+					width = "full",  
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Rogue.Spells.Blind.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Rogue.Spells.Blind.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		
+	},
+}
+
+
+
+------------------------
+---- Shaman Options ----
+------------------------
+local Shaman = {
+	type = "group",
+	name = "|cFF00DBBD" .. L["Spell Options"] .."|r",
+	order = 2,
+	childGroups = "tree",
+	hidden = function()
+				return RSA.db.profile.General.Class ~= "SHAMAN"
+			end,
+	args = {
+		Description = {
+			type = "description",
+			name = L.Spell_Options,
+			order = 0,
+		},		
+		Heroism = {
+			type = "group",
+			name = "Bloodlust / Heroism",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Heroism.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Heroism.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Heroism.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Heroism.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Shaman.Spells.Heroism.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Heroism.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Heroism.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Heroism.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Heroism.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Shaman.Spells.Heroism.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Shaman.Spells.Heroism.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Heroism.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Heroism.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Heroism.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Heroism.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Heroism.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.Heroism.Messages.Start = value
+						end,
+				},
+			},
+		},
+		ManaTide = {
+			type = "group",
+			name = "ManaTide",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.ManaTide.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.ManaTide.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.ManaTide.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.ManaTide.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Shaman.Spells.ManaTide.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.ManaTide.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.ManaTide.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.ManaTide.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.ManaTide.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Shaman.Spells.ManaTide.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Shaman.Spells.ManaTide.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.ManaTide.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.ManaTide.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.ManaTide.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.ManaTide.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.ManaTide.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.ManaTide.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.ManaTide.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.ManaTide.Messages.End = value
+						end,
+				},
+			},
+		},
+		Hex = {
+			type = "group",
+			name = "Hex",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Hex.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Hex.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Hex.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Hex.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Shaman.Spells.Hex.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Hex.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Hex.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Hex.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Hex.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Shaman.Spells.Hex.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Shaman.Spells.Hex.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Hex.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Hex.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Hex.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Hex.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Hex.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.Hex.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Hex.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.Hex.Messages.End = value
+						end,
+				},
+				Resisted = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Hex.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.Hex.Messages.Resisted = value
+						end,
+				},
+				Immune = {
+					type = "input", 
+					width = "full",  
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Hex.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.Hex.Messages.Immune = value
+						end,
+				},
+			},
+		},		
+		WindShear = {
+			type = "group",
+			name = "Wind Shear",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.WindShear.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.WindShear.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.WindShear.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.WindShear.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.WindShear.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.WindShear.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Shaman.Spells.WindShear.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.WindShear.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.WindShear.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.WindShear.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.WindShear.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Shaman.Spells.WindShear.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Shaman.Spells.WindShear.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.WindShear.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.WindShear.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.WindShear.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.WindShear.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescInterrupt,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.WindShear.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.WindShear.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.WindShear.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.WindShear.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.WindShear.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.WindShear.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Purge = {
+			type = "group",
+			name = "Purge",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Purge.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Purge.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Purge.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Purge.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Shaman.Spells.Purge.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Purge.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Purge.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Purge.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Purge.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Shaman.Spells.Purge.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Shaman.Spells.Purge.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Purge.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Purge.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Purge.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.Purge.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescDispel,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Purge.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.Purge.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.Purge.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.Purge.Messages.End = value
+						end,
+				},
+			},
+		},
+		CleanseSpirit = {
+			type = "group",
+			name = "Cleanse Spirit",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.CleanseSpirit.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.CleanseSpirit.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.CleanseSpirit.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.CleanseSpirit.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Shaman.Spells.CleanseSpirit.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.CleanseSpirit.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.CleanseSpirit.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.CleanseSpirit.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.CleanseSpirit.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Shaman.Spells.CleanseSpirit.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Shaman.Spells.CleanseSpirit.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.CleanseSpirit.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.CleanseSpirit.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.CleanseSpirit.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Shaman.Spells.CleanseSpirit.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescDispel,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Shaman.Spells.CleanseSpirit.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Shaman.Spells.CleanseSpirit.Messages.Start = value
+						end,
+				},
+			},
+		},		
+
+
+
+	},
+}
+
+
+-------------------------
+---- Warlock Options ----
+-------------------------
+local Warlock = {
+	type = "group",
+	name = "|cFF9482C9" .. L["Spell Options"] .."|r",
+	order = 2,
+	childGroups = "tree",
+	hidden = function()
+			return RSA.db.profile.General.Class ~= "WARLOCK"
+		end,
+	args = {
+		Description = {
+			type = "description",
+			name = L.Spell_Options,
+			order = 0,
+		},		
+		SoulWell = {
+			type = "group",
+			name = "Soul Well",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SoulWell.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SoulWell.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SoulWell.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SoulWell.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warlock.Spells.SoulWell.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SoulWell.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SoulWell.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SoulWell.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SoulWell.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warlock.Spells.SoulWell.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warlock.Spells.SoulWell.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SoulWell.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SoulWell.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SoulWell.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SoulWell.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SoulWell.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.SoulWell.Messages.Start = value
+						end,
+				},
+			},
+		},
+		SummonStone = {
+			type = "group",
+			name = "Summon Stone",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SummonStone.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SummonStone.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SummonStone.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SummonStone.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warlock.Spells.SummonStone.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SummonStone.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SummonStone.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SummonStone.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SummonStone.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warlock.Spells.SummonStone.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warlock.Spells.SummonStone.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SummonStone.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SummonStone.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SummonStone.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SummonStone.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SummonStone.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.SummonStone.Messages.Start = value
+						end,
+				},
+			},
+		},
+		Banish = {
+			type = "group",
+			name = "Banish",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Banish.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Banish.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Banish.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Banish.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warlock.Spells.Banish.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Banish.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Banish.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Banish.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Banish.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warlock.Spells.Banish.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warlock.Spells.Banish.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Banish.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Banish.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Banish.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Banish.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Banish.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Banish.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Banish.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Banish.Messages.End = value
+						end,
+				},
+				Resisted = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Banish.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Banish.Messages.Resisted = value
+						end,
+				},
+				Immune = {
+					type = "input", 
+					width = "full",  
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Banish.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Banish.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Fear = {
+			type = "group",
+			name = "Fear",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Fear.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Fear.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Fear.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Fear.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warlock.Spells.Fear.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Fear.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Fear.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Fear.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Fear.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warlock.Spells.Fear.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warlock.Spells.Fear.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Fear.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Fear.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Fear.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Fear.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Fear.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Fear.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Fear.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Fear.Messages.End = value
+						end,
+				},
+				Resisted = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Fear.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Fear.Messages.Resisted = value
+						end,
+				},
+				Immune = {
+					type = "input", 
+					width = "full",  
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Fear.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Fear.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Seduce = {
+			type = "group",
+			name = "Succubus: Seduce",
+			order = 50,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Seduce.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Seduce.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Seduce.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Seduce.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warlock.Spells.Seduce.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Seduce.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Seduce.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Seduce.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Seduce.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warlock.Spells.Seduce.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warlock.Spells.Seduce.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Seduce.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Seduce.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Seduce.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Seduce.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Seduce.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Seduce.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Seduce.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Seduce.Messages.End = value
+						end,
+				},
+				Resisted = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Seduce.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Seduce.Messages.Resisted = value
+						end,
+				},
+				Immune = {
+					type = "input", 
+					width = "full",  
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Seduce.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Seduce.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		SpellLock = {
+			type = "group",
+			name = "Felhunter: Spell Lock",
+			order = 50,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SpellLock.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SpellLock.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SpellLock.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SpellLock.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warlock.Spells.SpellLock.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SpellLock.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SpellLock.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SpellLock.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SpellLock.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warlock.Spells.SpellLock.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warlock.Spells.SpellLock.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SpellLock.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SpellLock.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SpellLock.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.SpellLock.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescInterrupt,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SpellLock.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.SpellLock.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SpellLock.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.SpellLock.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input", 
+					width = "full",  
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.SpellLock.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.SpellLock.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Devour = {
+			type = "group",
+			name = "Felhunter: Devour Magic",
+			order = 50,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Devour.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Devour.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Devour.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Devour.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input", 
+					width = "full",  
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warlock.Spells.Devour.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Devour.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Devour.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Devour.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Devour.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warlock.Spells.Devour.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warlock.Spells.Devour.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Devour.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Devour.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Devour.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Devour.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescDispel,
+					order = 10,
+				},
+				Start = {
+					type = "input", 
+					width = "full",  
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Devour.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Devour.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input", 
+					width = "full",  
+					name = L["Resisted"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Devour.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Devour.Messages.End = value
+						end,
+				},
+			},
+		},
+		Suffering = {
+			type = "group",
+			name = "Voidwalker: Suffering",
+			order = 50,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Suffering.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Suffering.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Suffering.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Suffering.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Suffering.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Suffering.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warlock.Spells.Suffering.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Suffering.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Suffering.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Suffering.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Suffering.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warlock.Spells.Suffering.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warlock.Spells.Suffering.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Suffering.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Suffering.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Suffering.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warlock.Spells.Suffering.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Suffering.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Suffering.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Suffering.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Suffering.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Warlock.Spells.Suffering.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warlock.Spells.Suffering.Messages.Immune = value
+						end,
+				},
+			},
+		},
+	},
+}
+
+
+
+-------------------------
+---- Warrior Options ----
+-------------------------
+local Warrior = {
+	type = "group",
+	name = "|cFFC98D57" .. L["Spell Options"] .."|r",
+	order = 2,
+	childGroups = "tree",
+	hidden = function()
+				return RSA.db.profile.General.Class ~= "WARRIOR"
+			end,
+	args = {
+		Description = {
+			type = "description",
+			name = L.Spell_Options,
+			order = 0,
+		},		
+		ShieldWall = {
+			type = "group",
+			name = "Shield Wall",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldWall.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldWall.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldWall.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldWall.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warrior.Spells.ShieldWall.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldWall.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldWall.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldWall.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldWall.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warrior.Spells.ShieldWall.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warrior.Spells.ShieldWall.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldWall.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldWall.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldWall.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldWall.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldWall.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.ShieldWall.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldWall.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.ShieldWall.Messages.End = value
+						end,
+				},
+			},
+		},
+		Disarm = {
+			type = "group",
+			name = "Disarm",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Disarm.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Disarm.Local = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Disarm.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Disarm.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warrior.Spells.Disarm.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Disarm.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Disarm.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Disarm.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Disarm.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warrior.Spells.Disarm.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warrior.Spells.Disarm.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Disarm.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Disarm.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Disarm.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Disarm.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Disarm.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Disarm.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Disarm.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Disarm.Messages.End = value
+						end,
+				},				
+				Resisted = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Disarm.Messages.Resisted
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Disarm.Messages.Resisted = value
+						end,
+				},				
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 14,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Disarm.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Disarm.Messages.Immune = value
+						end,
+				},				
+			},
+		},
+		Vigilance = {
+			type = "group",
+			name = "Vigilance",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Vigilance.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Vigilance.Local = value
+						end,
+				},
+				Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Vigilance.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Vigilance.Whisper = value
+						end,
+				},
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Vigilance.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Vigilance.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warrior.Spells.Vigilance.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Vigilance.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Vigilance.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Vigilance.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Vigilance.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warrior.Spells.Vigilance.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warrior.Spells.Vigilance.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Vigilance.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Vigilance.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Vigilance.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Vigilance.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Vigilance.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Vigilance.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Vigilance.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Vigilance.Messages.End = value
+						end,
+				},
+			},
+		},
+		LastStand = {
+			type = "group",
+			name = "Last Stand",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.LastStand.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.LastStand.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.LastStand.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.LastStand.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.LastStand.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.LastStand.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warrior.Spells.LastStand.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.LastStand.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.LastStand.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.LastStand.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.LastStand.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warrior.Spells.LastStand.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warrior.Spells.LastStand.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.LastStand.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.LastStand.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.LastStand.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.LastStand.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.LastStand.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.LastStand.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.LastStand.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.LastStand.Messages.End = value
+						end,
+				},
+			},
+		},
+		ChallengingShout = {
+			type = "group",
+			name = "Challenging Shout",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ChallengingShout.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ChallengingShout.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ChallengingShout.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ChallengingShout.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ChallengingShout.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ChallengingShout.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warrior.Spells.ChallengingShout.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ChallengingShout.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ChallengingShout.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ChallengingShout.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ChallengingShout.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warrior.Spells.ChallengingShout.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warrior.Spells.ChallengingShout.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ChallengingShout.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ChallengingShout.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ChallengingShout.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ChallengingShout.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescNoTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ChallengingShout.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.ChallengingShout.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ChallengingShout.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.ChallengingShout.Messages.End = value
+						end,
+				},
+			},
+		},		
+		ShatteringThrow = {
+			type = "group",
+			name = "Shattering Throw",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShatteringThrow.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShatteringThrow.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShatteringThrow.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShatteringThrow.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShatteringThrow.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShatteringThrow.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warrior.Spells.ShatteringThrow.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShatteringThrow.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShatteringThrow.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShatteringThrow.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShatteringThrow.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warrior.Spells.ShatteringThrow.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warrior.Spells.ShatteringThrow.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShatteringThrow.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShatteringThrow.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShatteringThrow.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShatteringThrow.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescTarget,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Start"],
+					desc = L.DescSpellStartCastingMessage,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShatteringThrow.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.ShatteringThrow.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["End"],
+					desc = L.DescSpellEndCastingMessage,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShatteringThrow.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.ShatteringThrow.Messages.End = value
+						end,
+				},
+			},
+		},
+		Pummel = {
+			type = "group",
+			name = "Pummel",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Pummel.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Pummel.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Pummel.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Pummel.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Pummel.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Pummel.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warrior.Spells.Pummel.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Pummel.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Pummel.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Pummel.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Pummel.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warrior.Spells.Pummel.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warrior.Spells.Pummel.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Pummel.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Pummel.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Pummel.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Pummel.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescInterrupt,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Pummel.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Pummel.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Pummel.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Pummel.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Pummel.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Pummel.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		ShieldBash = {
+			type = "group",
+			name = "Shield Bash",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldBash.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldBash.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldBash.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldBash.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldBash.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldBash.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warrior.Spells.ShieldBash.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldBash.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldBash.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldBash.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldBash.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warrior.Spells.ShieldBash.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warrior.Spells.ShieldBash.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldBash.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldBash.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldBash.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.ShieldBash.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescInterrupt,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldBash.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.ShieldBash.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldBash.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.ShieldBash.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.ShieldBash.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.ShieldBash.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		Taunt = {
+			type = "group",
+			name = "Taunt",
+			order = 25,
+			args = {
+				Title = {
+					type = "header",
+					name = L["Announce In"],
+					order = 0,
+				},
+				Local = {
+					type = "toggle",
+					name = L["Local"],
+					order = 1,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Taunt.Local
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Taunt.Local = value
+						end,
+				},
+				--[[Whisper = {
+					type = "toggle",
+					name = L["Whisper"],
+					order = 2,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Taunt.Whisper
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Taunt.Whisper = value
+						end,
+				},]]--
+				CustomChannelEnabled = {
+					type = "toggle",
+					name = L["Custom Channel"],
+					order = 3,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Taunt.CustomChannel.Enabled
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Taunt.CustomChannel.Enabled = value
+						end,
+				},
+				CustomChannelName = {
+					type = "input",
+					width = "full",
+					name = L["Channel Name"],
+					order = 4,
+					hidden = function()
+							return RSA.db.profile.Warrior.Spells.Taunt.CustomChannel.Enabled == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Taunt.CustomChannel.Channel
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Taunt.CustomChannel.Channel = value
+						end,
+				},
+				Raid = {
+					type = "toggle",
+					name = L["Raid"],
+					order = 5,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == true
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Taunt.Raid
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Taunt.Raid = value
+						end,
+				},
+				Party = {
+					type = "toggle",
+					name = L["Party"],
+					order = 6,
+					hidden = function()
+								return RSA.db.profile.General.Smart.RaidParty == true
+							end,
+					get = function(info)
+								return RSA.db.profile.Warrior.Spells.Taunt.Party
+							end,
+					set = function (info, value)
+								RSA.db.profile.Warrior.Spells.Taunt.Party = value
+							end,
+				},
+				---- Smart Raid / Party ----
+				RaidParty = {
+					type = "toggle",
+					name = L["Raid / Party"],
+					desc = L["Sends to Raid if you're in a raid, or party if you're in a party."],
+					order = 7,
+					hidden = function()
+							return RSA.db.profile.General.Smart.RaidParty == false
+						end,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Taunt.Smart.RaidParty
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Taunt.Smart.RaidParty = value
+						end,
+				},
+				Say = {
+					type = "toggle",
+					name = L["Say"],
+					desc = L["Sends to say if you are ungrouped."],
+					order = 8,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Taunt.Smart.Say
+						end,
+					set = function (info, value)
+							RSA.db.profile.Warrior.Spells.Taunt.Smart.Say = value
+						end,
+				},
+				---- Custom Message ----
+				Title2 = {
+					type = "header",
+					name = L["Message"],
+					order = 9,
+				},
+				Description = {
+					type = "description",
+					name = L.SpellDescMissable,
+					order = 10,
+				},
+				Start = {
+					type = "input",
+					width = "full",
+					name = L["Successful"],
+					desc = L.DescSpellStartSuccess,
+					order = 11,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Taunt.Messages.Start
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Taunt.Messages.Start = value
+						end,
+				},
+				End = {
+					type = "input",
+					width = "full",
+					name = L["Resisted"],
+					desc = L.DescSpellEndResist,
+					order = 12,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Taunt.Messages.End
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Taunt.Messages.End = value
+						end,
+				},
+				Immune = {
+					type = "input",
+					width = "full",
+					name = L["Immune"],
+					desc = L.DescSpellEndImmune,
+					order = 13,
+					get = function(info)
+							return RSA.db.profile.Warrior.Spells.Taunt.Messages.Immune
+						end,
+					set = function(info, value)
+							RSA.db.profile.Warrior.Spells.Taunt.Messages.Immune = value
+						end,
+				},
+			},
+		},
+		
+		
+		
+		
+	},
+}
+
+
+-- Add lib sink to config options.
+--options.args.output = RSA_O:GetSinkAce3OptionsDataTable()
+
+-----------------------
+---- Ace functions ----
+-----------------------
+
+function RSA_O:OnInitialize()
+    -- Called when the addon is loaded
+    self.db = LibStub("AceDB-3.0"):New("RSADB", defaults) -- Setup Saved Variables
+	
+	--[[if self.db.global.version < GetAddOnMetadata("RSA", "Version") then
+		self.db.global.version = GetAddOnMetadata("RSA", "Version")
+	end]]--
+	
+	-- Check what class we are and save it. Used to determine what options to show.
+	local pClass = select(2, UnitClass("player"))
+	self.db.profile.General.Class = pClass
+	self.db.RegisterCallback(self, "OnProfileChanged", "RefreshConfig")
+	self.db.RegisterCallback(self, "OnProfileCopied", "RefreshConfig")
+	self.db.RegisterCallback(self, "OnProfileReset", "RefreshConfig")	
+	
+	-- Register Various Options
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("RSA", Options) -- Register Options
+    self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RSA", "Raeli's Spell Announcer") -- Add options to Blizzard interface
+	if pClass == "DEATHKNIGHT" then -- Load Class Options
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("Spell Options", DeathKnight) -- Register Options
+		self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Spell Options", "Spell Options", "Raeli's Spell Announcer") -- Add options to Blizzard interface	
+	elseif pClass == "DRUID" then
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("Spell Options", Druid) -- Register Options
+		self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Spell Options", "Spell Options", "Raeli's Spell Announcer") -- Add options to Blizzard interface	
+	elseif pClass == "HUNTER" then
+--		LibStub("AceConfig-3.0"):RegisterOptionsTable("Spell Options", Hunter) -- Register Options
+--		self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Spell Options", "Spell Options", "Raeli's Spell Announcer") -- Add options to Blizzard interface	
+	elseif pClass == "MAGE" then
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("Spell Options", Mage) -- Register Options
+		self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Spell Options", "Spell Options", "Raeli's Spell Announcer") -- Add options to Blizzard interface	
+	elseif pClass == "PALADIN" then
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("Spell Options", Paladin) -- Register Options
+		self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Spell Options", "Spell Options", "Raeli's Spell Announcer") -- Add options to Blizzard interface	
+	elseif pClass == "PRIEST" then
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("Spell Options", Priest) -- Register Options
+		self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Spell Options", "Spell Options", "Raeli's Spell Announcer") -- Add options to Blizzard interface	
+	elseif pClass == "ROGUE" then
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("Spell Options", Rogue) -- Register Options
+		self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Spell Options", "Spell Options", "Raeli's Spell Announcer") -- Add options to Blizzard interface	
+	elseif pClass == "SHAMAN" then
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("Spell Options", Shaman) -- Register Options
+		self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Spell Options", "Spell Options", "Raeli's Spell Announcer") -- Add options to Blizzard interface	
+	elseif pClass == "WARLOCK" then
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("Spell Options", Warlock) -- Register Options
+		self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Spell Options", "Spell Options", "Raeli's Spell Announcer") -- Add options to Blizzard interface
+	elseif pClass == "WARRIOR" then
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("Spell Options", Warrior) -- Register Options
+		self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Spell Options", "Spell Options", "Raeli's Spell Announcer") -- Add options to Blizzard interface	
+	end
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("Reminders", Reminders) -- Register Options
+    self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Reminders", "Buff Reminders", "Raeli's Spell Announcer") -- Add options to Blizzard interface		
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("Profile", Profile) -- Register Options
+    self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Profile", "Profile", "Raeli's Spell Announcer") -- Add options to Blizzard interface
+	Profile.args.Profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db) -- Add profile management to Blizzard interface
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("FAQ", FAQ) -- Register Options
+    self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("FAQ", "Help!", "Raeli's Spell Announcer") -- Add options to Blizzard interface		
+
+	--[[  LibSink - Output options to bigwigs etc.
+	self:GetSinkAce3OptionsDataTable()
+	self:SetSinkStorage(self.db.profile)
+	]]--
+
+end
+
+function RSA_O:RefreshConfig()
+	local pClass = select(2, UnitClass("player"))
+		self.db.profile.class = pClass
+end
+
+function RSA_O:OnProfileEnable()
+	self.db = self.db.profile
+	local pClass = select(2, UnitClass("player"))
+		self.db.profile.class = pClass
+end

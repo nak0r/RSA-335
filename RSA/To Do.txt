@@ -1,0 +1,7 @@
+********** To Do **********
+
+** Add Hammer of Justice - Interupt only.
+** Add Avenger's Shield - Interrupt only.
+** Add Resurrection tracking
+** Add the ability to play sounds on local warnings
+** Add the ability to send messages through other addon's frames, such as Parrot SCT, Bigwigs etc.
