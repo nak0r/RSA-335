@@ -1,4 +1,4 @@
-There is another RSA for 3.3.5 but it's missing a TON of spells.
+There is another RSA for 3.3.5 but it's missing a TON of spells. This version was an early Cataclysm version but had almost all the proper WotLK spells enabled.
 
 ********** RSA Changelog **********
 
