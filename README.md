@@ -1,3 +1,5 @@
+There is another RSA for 3.3.5 but it's missing a TON of spells.
+
 ********** RSA Changelog **********
 
 Changes made on top of version 2.21 (the version numbers in RSA.toc and
